@@ -4,6 +4,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import ListProduct from './components/products/ListProduct';
+import CreateProduct from './components/products/CreateProduct';
+import Grid from '@material-ui/core/Grid';
 import { useState } from 'react';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
   const [products, setProducts] = useState(initialValue);
   // Yêu cầu: Tạo 1 component, hiển thị danh sách products
 
+  const [clickedRow, setClickedRow] = useState({});
+
   return (
     <div>
       <Navbar />
@@ -35,7 +39,16 @@ function App() {
         <CssBaseline />
         <Container maxWidth="sm">
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
-            <ListProduct data={products}/>
+            <Grid container>
+              <Grid item>
+                <CreateProduct clickedRow={clickedRow}/>
+              </Grid>
+              <Grid item>
+              </Grid>
+            </Grid>
+            <ListProduct
+              setClickedRow={setClickedRow}
+              data={products} />
           </Typography>
         </Container>
       </div>
