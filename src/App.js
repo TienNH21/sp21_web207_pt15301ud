@@ -27,10 +27,15 @@ function App() {
     },
   ];
 
-  const [products, setProducts] = useState(initialValue);
-  // Yêu cầu: Tạo 1 component, hiển thị danh sách products
+  const formDataInitValue = {
+    id: '',
+    name: '',
+    price: '',
+  }
 
-  const [clickedRow, setClickedRow] = useState({});
+  const [products, setProducts] = useState(initialValue);
+  const [clickedRow, setClickedRow] = useState(-1);
+  const [formData, setFormData] = useState(formDataInitValue);
 
   return (
     <div>
@@ -41,12 +46,19 @@ function App() {
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
             <Grid container>
               <Grid item>
-                <CreateProduct clickedRow={clickedRow}/>
+                <CreateProduct
+                  setFormData={ setFormData }
+                  setProducts={ setProducts }
+                  products={ products }
+                  formData={ formData }
+                  clickedRow={ clickedRow }/>
               </Grid>
               <Grid item>
               </Grid>
             </Grid>
             <ListProduct
+              setProducts={ setProducts }
+              setFormData={setFormData}
               setClickedRow={setClickedRow}
               data={products} />
           </Typography>
