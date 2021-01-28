@@ -1,6 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 function CreateProduct({
   clickedRow,
@@ -14,6 +15,23 @@ function CreateProduct({
     setFormData({
       ...formData,
       [name]: value,
+    });
+  }
+
+  const onCreateProduct = () => {
+    const url = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products';
+    axios({
+      method: 'POST',
+      url: url,
+      data: formData,
+    }).then((response) => {
+      const { data } = response
+      setProducts([
+        ...products,
+        data,
+      ]);
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
@@ -35,10 +53,7 @@ function CreateProduct({
       });
     } else {
       // Tạo mới
-      setProducts([
-        ...products,
-        formData,
-      ]);
+      onCreateProduct();
     }
   }
 
