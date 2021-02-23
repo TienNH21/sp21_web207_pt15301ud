@@ -8,6 +8,7 @@ import CreateProduct from './components/products/CreateProduct';
 import Grid from '@material-ui/core/Grid';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const formDataInitValue = {
@@ -23,25 +24,38 @@ function App() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-      const url = `https://5f2d045b8085690016922b50.mockapi.io/todo-list/products?page=${page}&limit=${limit}`;
-      axios({
-        method: 'GET',
-        url: url,
+    const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products?limit=" + limit + "&page=" + page;
+    axios({
+      method: 'GET',
+      url: url,
+    })
+      .then((response) => {
+        console.log(response)
+        const { data } = response;
+        setProducts(data);
       })
-        .then((response) => {
-          console.log(response)
-          const { data } = response;
-          setProducts(data);
-        })
-        .catch((error) => {
-          console.log(error, error.response);
-        });
+      .catch((error) => {
+        console.log(error, error.response);
+      });
     }, [
       /*
        * Khi những phần tử trong mảng thay đổi giá trị,
        * useEffect sẽ chạy lại hàm callback
        */
-    ]);
+      page
+  ]);
+
+  const trangTruoc = function () {
+    if (page == 1) {
+      return ;
+    }
+
+    setPage(page - 1);
+  }
+
+  const trangSau = function () {
+    setPage(page + 1);
+  }
 
   return (
     <div>
@@ -67,6 +81,24 @@ function App() {
               setFormData={setFormData}
               setClickedRow={setClickedRow}
               data={products} />
+
+            <ul className="pagination mt-4">
+              <li
+                onClick={ trangTruoc }
+                className="page-item">
+                <a className="page-link">Trang trước</a>
+              </li>
+
+              <li className="page-item">
+                <a className="page-link">{ page }</a>
+              </li>
+
+              <li
+                onClick={ trangSau }
+                className="page-item">
+                <a className="page-link">Trang sau</a>
+              </li>
+            </ul>
           </Typography>
         </Container>
       </div>

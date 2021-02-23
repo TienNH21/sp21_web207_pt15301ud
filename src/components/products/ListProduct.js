@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Pagination from '@material-ui/lab/Pagination';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 function ListProduct({
   data,
@@ -18,13 +19,26 @@ function ListProduct({
     setFormData(value);
   }
 
-  const btnDeleteOnClick = (event, index) => {
-    setProducts((oldState) => {
-      let newState = oldState.filter((value, idx) => {
-        return idx == index ? false : true;
+  const btnDeleteOnClick = (event, value, index) => {
+    const urlApiXoa = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products/' + value.id;
+    axios.delete(urlApiXoa)
+      .then(function (response) {
+        const listNew = data.filter(function (val, idx) {
+          if (idx == index) {
+            // Loại bỏ phần tử
+            return false;
+          } else {
+            // Giữ lại phần tử
+            return true;
+          }
+        });
+
+        setProducts(listNew);
+      })
+      .catch(function (error) {
+        console.error('error');
+        console.error(error);
       });
-      return newState;
-    });
   }
 
   return (
@@ -53,7 +67,7 @@ function ListProduct({
                   <TableCell>
                     <Button
                       onClick={ (event) => {
-                        btnDeleteOnClick(event, index)
+                        btnDeleteOnClick(event, value, index)
                       } }
                       variant="contained"
                       color="secondary">
@@ -66,7 +80,6 @@ function ListProduct({
           }
         </TableBody>
       </Table>
-      <Pagination count={10} variant="outlined" />
     </React.Fragment>
   );
 }
