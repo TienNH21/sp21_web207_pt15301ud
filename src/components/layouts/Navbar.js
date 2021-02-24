@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,10 @@ function Navbar () {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          Products
+          <Link to="/products">Products</Link>
+        </Typography>
+        <Typography variant="h6" className={classes.title}>
+          <Link to="/categories">Category</Link>
         </Typography>
         <Button color="inherit">Login</Button>
       </Toolbar>

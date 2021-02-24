@@ -35,22 +35,34 @@ function CreateProduct({
     });
   }
 
+  const onUpdateProduct = function () {
+    const updateApiUrl = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products/' + formData.id;
+
+    axios.put(updateApiUrl, formData)
+      .then(function (response) {
+        const { data } = response;
+        console.log(data);
+
+        const lisProductNew = products.map(function (val, idx) {
+          if (val.id == data.id) {
+            return data;
+          } else {
+            return val;
+          }
+        });
+
+        setProducts(lisProductNew);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (clickedRow != -1) {
       // Cập nhật
-      setProducts((oldState) => {
-        let newState = oldState.map((value, index) => {
-          if (index == clickedRow) {
-            return formData;
-          } else {
-            return value;
-          }
-
-          // return index == clickedRow ? formData : value;
-        });
-        return newState;
-      });
+      onUpdateProduct();
     } else {
       // Tạo mới
       onCreateProduct();
@@ -68,6 +80,7 @@ function CreateProduct({
           variant="outlined"
           name="id"
           fullWidth
+          disabled
           style={{ marginTop: '20px' }}
           label="Id" />
         <TextField
