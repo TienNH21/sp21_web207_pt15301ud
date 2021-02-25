@@ -9,7 +9,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Product() {
+function Product({
+  danhMucId
+}) {
+
   const formDataInitValue = {
     id: '',
     name: '',
@@ -25,7 +28,8 @@ function Product() {
 
   useEffect(() => {
     setLoading(true);
-    const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products?limit=" + limit + "&page=" + page;
+    const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/categories/" +
+      danhMucId + "/products?limit=" + limit + "&page=" + page;
     axios({
       method: 'GET',
       url: url,
@@ -37,13 +41,15 @@ function Product() {
       })
       .catch((error) => {
         console.log(error, error.response);
+        setLoading(false);
       });
     }, [
       /*
        * Khi những phần tử trong mảng thay đổi giá trị,
        * useEffect sẽ chạy lại hàm callback
        */
-      page
+      page,
+      danhMucId,
   ]);
 
   const trangTruoc = function () {
